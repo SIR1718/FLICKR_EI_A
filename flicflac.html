@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="control">
+	<input type="text" id="itag"/>
+	<button id ="get">Search Photos</button>
+</div>
+<div id="content">
+	
+</div>
+
+</body>
+<script type="text/javascript">
+
+
+	/*
+	{ "photos": { "page": 1, "pages": "2316", "perpage": 10, "total": "23157", 
+    "photo": [
+      { "id": "37641210381", "owner": "60083277@N00", "secret": "fe8631226d", "server": "4468", "farm": 5, "title": "De olho a brilhar", "ispublic": 1, "isfriend": 0, "isfamily": 0, "url_m": "https:\/\/farm5.staticflickr.com\/4468\/37641210381_fe8631226d.jpg", "height_m": "410", "width_m": "500" },
+    ] }, "stat": "ok" }
+	*/
+
+	//key 1c029a053d66b93bc624ef93f77e5f98
+
+// URL: https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=04affc099b81b7b911d4df63ca60272c&tags=benfica&extras=url_m&per_page=10&format=json&nojsoncallback=1&auth_token=72157687138610101-8b3b8923efc2f7eb&api_sig=c4d8802e1834d8435cbcb844688953bb
+
+	bsearch = document.getElementById("get");
+	itag = document.getElementById("itag");
+	bsearch.addEventListener("click", function () {
+
+		
+
+		method  	= "method=flickr.photos.search";
+		api_key 	= "api_key=1c029a053d66b93bc624ef93f77e5f98";
+		extras		= "extras=url_q";
+		format		= "format=json";
+		per_page	= "per_page=10";
+		nojsoncallback	= "nojsoncallback=1";
+		tags 		= "tags="+itag.value;
+
+		urlbase = "https://api.flickr.com/services/rest/?";
+
+		myurl = 	urlbase + 
+					method  + "&" + 
+					api_key + "&" +
+					extras  + "&" +
+					per_page + "&" + 
+					format + "&" + 
+					nojsoncallback + "&" + 
+					tags;
+
+
+	    reqajax = new XMLHttpRequest();
+	    reqajax.open("GET",myurl);
+	    reqajax.onreadystatechange = function () {
+	    	//debugger;
+	    	//console.log(reqajax.readyState);
+	    	if (reqajax.status == 200 &&
+	    		reqajax.readyState == 4) {
+	    		console.log(reqajax.responseText);
+	    		photosJS = JSON.parse(reqajax.responseText);
+	    		for(i=0; i < photosJS.photos.photo.length; i++) {
+	    			console.log(photosJS.photos.photo[i].url_q);
+	    			newimg = document.createElement("img");
+	    			newimg.setAttribute("src",photosJS.photos.photo[i].url_q);
+	    			document.getElementById("content").appendChild(newimg);
+	    		} 
+
+
+	    	}
+	    }
+	    reqajax.send();
+
+	});
+
+
+
+
+</script>
+</html>
