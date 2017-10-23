@@ -22,7 +22,27 @@
 </div>
 
 </body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
 <script type="text/javascript">
+
+	if (annyang) {
+
+  		var commands = {
+    		'mostra *tag': searchPhotos,
+    		'limpa' : clearPhotos
+    		}
+
+ 		 // Add our commands to annyang
+
+ 		annyang.setLanguage('pt-PT')
+ 		annyang.debug();
+  		annyang.addCommands(commands);
+
+  		// Start listening. You can call this here, or attach this call to an event, button, etc.
+
+  		annyang.start({ autoRestart: true, continuous: true });
+}
 
 
 	/*
@@ -48,7 +68,16 @@
 	}
 
 
-	bsearch.addEventListener("click", function () {
+	//bsearch.addEventListener("click", );
+
+
+
+		function searchPhotos(text) {
+
+		if (text == 'limpa') {
+			clearPhotos();
+			return;
+		}
 
 		
 
@@ -58,7 +87,9 @@
 		format		= "format=json";
 		per_page	= "per_page=10";
 		nojsoncallback	= "nojsoncallback=1";
-		tags 		= "tags="+itag.value;
+		//tags 		= "tags="+itag.value;
+		tags 		= "tags="+text;
+
 
 		urlbase = "https://api.flickr.com/services/rest/?";
 
@@ -95,9 +126,7 @@
 
 	    itag.value="";
 
-	});
-
-
+	}
 
 
 </script>
